@@ -1,0 +1,5 @@
+nginx_packages:
+  - nginx
+  - python3-passlib
+
+nginx_user: www-data

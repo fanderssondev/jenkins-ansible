@@ -1,0 +1,68 @@
+# daemon            off;
+worker_processes  2;
+user              {% if ansible_os_family == "RedHat" %}nginx{% elif ansible_os_family == "Debian" %}www-data{% endif %};
+
+events {
+    use           epoll;
+    worker_connections  128;
+}
+
+error_log         logs/error.log info;
+
+http {
+    server_tokens off;
+    include       mime.types;
+    charset       utf-8;
+    access_log    logs/access.log combined;
+
+    server {
+        server_name   www.example.net;
+        listen        80;
+        error_page    500 502 503 504  /50x.html;
+        
+        location / {
+            auth_basic "admin area";
+            auth_basic_user_file /etc/nginx/.htpasswd;
+            root      /websites/www.example.net;
+            index     index.html;
+        }
+    }
+
+    # Redirect HTTP to HTTPS for www.domain.org
+    server {
+        server_name www.domain.org;
+        listen 80;
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+    listen 443 ssl default_server;
+    server_name _;  # the underscore is a common catch-all
+
+    ssl_certificate     /etc/ssl/certs/default.crt;
+    ssl_certificate_key /etc/ssl/private/default.key;
+
+    return 404;
+    }
+
+    server {
+        server_name   www.domain.org;
+        listen        443 ssl;
+
+        ssl_certificate     /etc/ssl/certs/www.domain.org.crt;
+        ssl_certificate_key /etc/ssl/private/www.domain.org.key;
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+        ssl_protocols       TLSv1.2 TLSv1.3;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
+
+        error_page    500 502 503 504  /50x.html;
+        
+        location / {
+            auth_basic "admin area";
+            auth_basic_user_file /etc/nginx/.htpasswd;
+            root      /websites/www.domain.org;
+            index     index.html;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+networks:
+  devops:
+
+volumes:
+  jenkins:
+
+services:
+  jenkins:
+    image: jenkins
+    container_name: jenkins
+    hostname: jenkins
+    privileged: true
+    build:
+      context: ./
+      args:
+        JENKINS_VERSION: $JENKINS_VERSION
+        # JENKINS_USER_NAME: $JENKINS_USER_NAME
+        # JENKINS_USER_PASS: $JENKINS_USER_PASS
+    volumes:
+      - type: volume
+        source: jenkins
+        target: /var/jenkins_home
+      - type: bind
+        source: ./projects
+        target: /projects
+    ports:
+      - "9080:8080"
+      - "50000:50000"
+    # healthcheck:
+    # some healthcheck here
+    # environment:
+    # some sys envs here
+    networks:
+      - devops

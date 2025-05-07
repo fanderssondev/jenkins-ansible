@@ -1,0 +1,8 @@
+---
+firewall_packages:
+  []
+  # - python3-firewall # List of packages to be installed
+
+firewall_services:
+  []
+  # - http # List of services to be opened

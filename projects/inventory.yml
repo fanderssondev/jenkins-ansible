@@ -1,0 +1,13 @@
+---
+all:
+  hosts:
+  vars:
+    ansible_user: ansible
+    ansible_python_interpreter: /usr/bin/python3
+  children:
+    redhat:
+      hosts:
+        rocky9a:
+    debian:
+      hosts:
+        ubuntu24a:

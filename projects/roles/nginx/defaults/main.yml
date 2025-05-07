@@ -1,0 +1,35 @@
+---
+nginx_dirs:
+  []
+  # - path: # path to dir here
+  #   state: directory
+  #   recurse: true
+  #   owner: nginx
+  #   group: nginx
+  #   mode: "0755"
+
+nginx_websites:
+  []
+  # - src: index.html.j2
+  #   dest: /websites/www.domain.org/index.html
+  #   site: www.domain.org
+  #   owner: nginx
+  #   group: nginx
+  #   mode: "0755"
+
+nginx_auth:
+  []
+  # - path: /etc/nginx/passwdfile
+  #   name: admin
+  #   password: "admin123"
+  #   owner: root
+  #   group: root
+  #   mode: "0640"
+
+nginx_files:
+  []
+  # - src: nginx.conf
+  #   dest: /etc/nginx/nginx.conf
+  #   owner: root
+  #   group: root
+  #   mode: "0644"
