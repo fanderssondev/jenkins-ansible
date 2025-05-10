@@ -23,6 +23,9 @@ services:
       - type: bind
         source: ./projects
         target: /projects
+      - type: bind
+        source: /home/fredrik/.ssh
+        target: /var/jenkins_home/.ssh
     ports:
       - "9080:8080"
       - "50000:50000"
