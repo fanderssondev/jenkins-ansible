@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Run Ansible") {
+            steps {
+                ansiColor('xterm') {
+                    ansiblePlaybook become: true,
+                    credentialsId: 'ansible.local.lab',
+                    inventory: '/projects/inventory.yml',
+                    playbook: '/projects/playbook.yml',
+                    limit: 'redhat',
+                    vaultCredentialsId: 'ansible-vault-password',
+                    disableHostKeyChecking: true, 
+                    colorized: true
+                }
+            }
+        }
+    }
+}
