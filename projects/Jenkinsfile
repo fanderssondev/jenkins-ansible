@@ -1,18 +1,27 @@
 pipeline {
     agent any
 
+    environment {
+        SUDO_PASSWD = credentials('ansible-sudo-password')
+    }
+
     stages {
         stage("Run Ansible") {
             steps {
                 ansiColor('xterm') {
-                    ansiblePlaybook become: true,
-                    credentialsId: 'ansible.local.lab',
-                    inventory: '/projects/inventory.yml',
-                    playbook: '/projects/playbook.yml',
-                    limit: 'redhat',
-                    vaultCredentialsId: 'ansible-vault-password',
-                    disableHostKeyChecking: true, 
-                    colorized: true
+                    ansiblePlaybook(
+                        become: true,
+                        credentialsId: 'ansible.local.lab',
+                        inventory: '/projects/inventory.yml',
+                        playbook: '/projects/playbook.yml',
+                        limit: 'redhat',
+                        vaultCredentialsId: 'ansible-vault-password',
+                        disableHostKeyChecking: true,
+                        colorized: true,
+                        extraVars: [
+                            ansible_become_pass: "${SUDO_PASSWD}"
+                        ]
+                    )
                 }
             }
         }
