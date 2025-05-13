@@ -19,7 +19,7 @@ pipeline {
                         disableHostKeyChecking: true,
                         colorized: true,
                         extraVars: [
-                            ansible_become_pass: "${SUDO_PASSWD}"
+                            ansible_become_pass: '$SUDO_PASSWD'
                         ]
                     )
                 }
